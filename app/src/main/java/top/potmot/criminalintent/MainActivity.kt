@@ -1,4 +1,4 @@
-package com.example.criminalintent.crimeinalntent2
+package top.potmot.criminalintent
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

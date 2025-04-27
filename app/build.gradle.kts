@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.criminalintent.crimeinalntent2"
+    namespace = "top.potmot.criminalintent"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.criminalintent.crimeinalntent2"
+        applicationId = "top.potmot.criminalintent"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

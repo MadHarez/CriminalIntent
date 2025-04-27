@@ -1,4 +1,4 @@
-package com.example.criminalintent.crimeinalntent2
+package top.potmot.criminalintent
 
 import android.app.DatePickerDialog
 import android.app.Dialog

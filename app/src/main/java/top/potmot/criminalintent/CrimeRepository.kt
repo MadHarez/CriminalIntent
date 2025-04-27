@@ -1,10 +1,10 @@
-package com.example.criminalintent.crimeinalntent2
+package top.potmot.criminalintent
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import com.example.criminalintent.crimeinalntent2.database.CrimeDatabase
-import com.example.criminalintent.crimeinalntent2.database.migration_1_2
+import top.potmot.criminalintent.database.CrimeDatabase
+import top.potmot.criminalintent.database.migration_1_2
 import java.util.*
 import java.util.concurrent.Executors
 

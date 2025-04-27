@@ -1,4 +1,4 @@
-package com.example.criminalintent.crimeinalntent2
+package top.potmot.criminalintent.criminaintent
 
 import org.junit.Test
 

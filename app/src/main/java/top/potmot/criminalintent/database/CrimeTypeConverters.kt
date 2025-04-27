@@ -1,4 +1,4 @@
-package com.example.criminalintent.crimeinalntent2.database
+package top.potmot.criminalintent.database
 
 import androidx.room.TypeConverter
 import java.util.*
