@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -40,10 +40,10 @@ android {
 }
 
 dependencies {
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
-    implementation("androidx.room:room-runtime:2.5.0")
-    ksp("androidx.room:room-compiler:2.5.0")
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.lifecycle.extension)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

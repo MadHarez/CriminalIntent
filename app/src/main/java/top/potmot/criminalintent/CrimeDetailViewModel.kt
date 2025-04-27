@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import java.util.*
+import java.io.File
 
 class CrimeDetailViewModel : ViewModel() {
     private val crimeRepository = CrimeRepository.get()
@@ -21,5 +22,9 @@ class CrimeDetailViewModel : ViewModel() {
 
     fun saveCrime(crime: Crime) {
         crimeRepository.updateCrime(crime)
+    }
+
+    fun getPhotoFile(crime: Crime): File {
+        return crimeRepository.getPhotoFile(crime)
     }
 }
