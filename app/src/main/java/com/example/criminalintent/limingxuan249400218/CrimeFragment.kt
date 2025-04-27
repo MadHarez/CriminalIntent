@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "CrimeFragment"
@@ -33,7 +34,7 @@ private const val DIALOG_DATE = "DialogDate"
 private const val REQUEST_DATE = 0
 private const val REQUEST_CONTACT = 1
 private const val REQUEST_PHOTO = 2
-private const val DATE_FORMAT = "EEE, MMM, dd"
+
 
 class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var crime: Crime
@@ -133,6 +134,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         dateButton.setOnClickListener {
             DatePickerFragment.newInstance(crime.date).apply {
                 setTargetFragment(this@CrimeFragment, REQUEST_DATE)
+
                 show(this@CrimeFragment.requireFragmentManager(), DIALOG_DATE)
             }
         }
@@ -220,14 +222,19 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         )
     }
 
+
     override fun onDateSelected(date: Date) {
         crime.date = date
-        updateUI()
+        updateDateButtonText() // 更新按钮显示
+    }
+    override fun onResume() {
+        super.onResume()
+        updateDateButtonText()
     }
 
     private fun updateUI() {
         titleField.setText(crime.title)
-        dateButton.text = crime.date.toString()
+        updateDateButtonText()
         solvedCheckBox.apply {
             isChecked = crime.isSolved
             jumpDrawablesToCurrentState()
@@ -242,10 +249,25 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         if (photoFile.exists()) {
             val bitmap = getScaledBitmap(photoFile.path, requireActivity())
             photoView.setImageBitmap(bitmap)
+            photoView.contentDescription =
+                getString(R.string.crime_photo_image_description)
         } else {
             photoView.setImageDrawable(null)
+            photoView.contentDescription =
+                getString(R.string.crime_photo_no_image_description)
         }
     }
+
+
+    private fun updateDateButtonText() {
+        val dateFormat = SimpleDateFormat(
+            getString(R.string.date_format_pattern),
+            Locale.getDefault()
+        )
+        dateButton.text = dateFormat.format(crime.date)
+    }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when {
@@ -269,6 +291,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
                     crimeDetailViewModel.saveCrime(crime)
                     suspectButton.text = suspect
                 }
+
             }
 
 
@@ -283,25 +306,31 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         }
     }
 
-        private fun getCrimeReport(): String {
-            val solvedString = if (crime.isSolved) {
-                getString(R.string.crime_report_solved)
-            } else {
-                getString(R.string.crime_report_unsolved)
-            }
-
-            val dateString = DateFormat.format(DATE_FORMAT, crime.date).toString()
-            val suspect = if (crime.suspect.isBlank()) {
-                getString(R.string.crime_report_no_suspect)
-            } else {
-                getString(R.string.crime_report_suspect, crime.suspect)
-            }
-
-            return getString(
-                R.string.crime_report,
-                crime.title, dateString, solvedString, suspect
-            )
+    private fun getCrimeReport(): String {
+        val solvedString = if (crime.isSolved) {
+            getString(R.string.crime_report_solved)
+        } else {
+            getString(R.string.crime_report_unsolved)
         }
+
+        // 使用本地化日期格式
+        val dateFormat = SimpleDateFormat(
+            getString(R.string.date_format_pattern),
+            Locale.getDefault()
+        )
+        val dateString = dateFormat.format(crime.date)
+
+        val suspect = if (crime.suspect.isBlank()) {
+            getString(R.string.crime_report_no_suspect)
+        } else {
+            getString(R.string.crime_report_suspect, crime.suspect)
+        }
+
+        return getString(
+            R.string.crime_report,
+            crime.title, dateString, solvedString, suspect
+        )
+    }
 
         companion object {
 
