@@ -1,4 +1,4 @@
-package com.example.criminalintent.crimeinalntent2
+package com.example.criminalintent.limingxuan249400218
 
 import android.content.Context
 import android.os.Bundle
@@ -28,7 +28,8 @@ class CrimeListFragment : Fragment() {
     private val crimeListViewModel: CrimeListViewModel by lazy {
         ViewModelProviders.of(this).get(CrimeListViewModel::class.java)
     }
-    private var callbacks: Callbacks? = null
+    private var callbacks
+                : Callbacks? = null
 
     interface Callbacks {
         fun onCrimeSelected(crimeId: UUID)
@@ -54,6 +55,7 @@ class CrimeListFragment : Fragment() {
         crimeRecyclerView =
             view.findViewById(R.id.crime_recycler_view) as RecyclerView
         crimeRecyclerView.layoutManager = LinearLayoutManager(context)
+        crimeRecyclerView.adapter = adapter
 
         return view
     }

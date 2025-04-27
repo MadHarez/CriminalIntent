@@ -1,4 +1,4 @@
-package com.example.criminalintent.crimeinalntent2
+package com.example.criminalintent.limingxuan249400218
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,4 +13,7 @@ data class Crime(
     var date: Date = Date(),
     var isSolved: Boolean = false,
     var suspect: String = ""
-)
+){
+val photoFileName
+    get() = "IMG_$id.jpg"
+}

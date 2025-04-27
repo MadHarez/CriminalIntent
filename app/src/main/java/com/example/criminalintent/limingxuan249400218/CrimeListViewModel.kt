@@ -1,8 +1,9 @@
-package com.example.criminalintent.crimeinalntent2
+package com.example.criminalintent.limingxuan249400218
 
 import androidx.lifecycle.ViewModel
 
 class CrimeListViewModel : ViewModel() {
+
     private val crimeRepository = CrimeRepository.get()
     val crimeListLiveData = crimeRepository.getCrimes()
 

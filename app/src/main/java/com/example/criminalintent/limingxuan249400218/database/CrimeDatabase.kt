@@ -1,11 +1,11 @@
-package com.example.criminalintent.crimeinalntent2.database
+package com.example.criminalintent.limingxuan249400218.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.criminalintent.crimeinalntent2.Crime
+import com.example.criminalintent.limingxuan249400218.Crime
 
 @Database(entities = [Crime::class], version = 2)
 @TypeConverters(CrimeTypeConverters::class)

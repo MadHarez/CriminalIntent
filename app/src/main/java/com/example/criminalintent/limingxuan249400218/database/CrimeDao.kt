@@ -1,11 +1,11 @@
-package com.example.criminalintent.crimeinalntent2.database
+package com.example.criminalintent.limingxuan249400218.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.criminalintent.crimeinalntent2.Crime
+import com.example.criminalintent.limingxuan249400218.Crime
 import java.util.*
 
 @Dao

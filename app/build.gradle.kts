@@ -1,15 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.example.criminalintent.crimeinalntent2"
+    namespace = "com.example.criminalintent.limingxuan249400218"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.criminalintent.crimeinalntent2"
+        applicationId = "com.example.criminalintent.limingxuan249400218"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -40,10 +40,10 @@ android {
 }
 
 dependencies {
-    implementation("androidx.recyclerview:recyclerview:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.0.0")
-    implementation("androidx.room:room-runtime:2.5.0")
-    ksp("androidx.room:room-compiler:2.5.0")
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.lifecycle.extension)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
