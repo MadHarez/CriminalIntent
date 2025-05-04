@@ -45,7 +45,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var photoView: ImageView
 
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
-        ViewModelProviders.of(this).get(CrimeDetailViewModel::class.java)
+        ViewModelProviders.of(this)[CrimeDetailViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
