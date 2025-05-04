@@ -93,15 +93,13 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
     override fun onStart() {
         super.onStart()
 
-        val titleWatcher = object : TextWatcher {
-
+        titleField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 sequence: CharSequence?,
                 start: Int,
                 count: Int,
                 after: Int
             ) {
-                // This space intentionally left blank
             }
 
             override fun onTextChanged(
@@ -113,16 +111,14 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
                 crime.title = sequence.toString()
             }
 
-            override fun afterTextChanged(sequence: Editable?) {
-                // This one too
+            override fun afterTextChanged(
+                sequence: Editable?
+            ) {
             }
-        }
-        titleField.addTextChangedListener(titleWatcher)
+        })
 
-        solvedCheckBox.apply {
-            setOnCheckedChangeListener { _, isChecked ->
-                crime.isSolved = isChecked
-            }
+        solvedCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            crime.isSolved = isChecked
         }
 
         dateButton.setOnClickListener {
@@ -133,18 +129,16 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         }
 
         reportButton.setOnClickListener {
-            Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, getCrimeReport())
-                putExtra(
-                    Intent.EXTRA_SUBJECT,
-                    getString(R.string.crime_report_subject)
-                )
-            }.also { intent ->
-                val chooserIntent =
-                    Intent.createChooser(intent, getString(R.string.send_report))
-                startActivity(chooserIntent)
-            }
+            Intent(Intent.ACTION_SEND)
+                .apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, getCrimeReport())
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject))
+                }
+                .also { intent ->
+                    val chooserIntent = Intent.createChooser(intent, getString(R.string.send_report))
+                    startActivity(chooserIntent)
+                }
         }
 
         suspectButton.apply {
@@ -254,8 +248,8 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
                 val cursor =
                     requireActivity().contentResolver
                         .query(contactUri, queryFields, null, null, null)
-                cursor?.use{
-                    if (it.count ==0){
+                cursor?.use {
+                    if (it.count == 0) {
                         return
                     }
                     it.moveToFirst()
@@ -278,35 +272,34 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         }
     }
 
-        private fun getCrimeReport(): String {
-            val solvedString = if (crime.isSolved) {
-                getString(R.string.crime_report_solved)
-            } else {
-                getString(R.string.crime_report_unsolved)
-            }
-
-            val dateString = DateFormat.format(DATE_FORMAT, crime.date).toString()
-            val suspect = if (crime.suspect.isBlank()) {
-                getString(R.string.crime_report_no_suspect)
-            } else {
-                getString(R.string.crime_report_suspect, crime.suspect)
-            }
-
-            return getString(
-                R.string.crime_report,
-                crime.title, dateString, solvedString, suspect
-            )
+    private fun getCrimeReport(): String {
+        val solvedString = if (crime.isSolved) {
+            getString(R.string.crime_report_solved)
+        } else {
+            getString(R.string.crime_report_unsolved)
         }
 
-        companion object {
+        val dateString = DateFormat.format(DATE_FORMAT, crime.date).toString()
+        val suspect = if (crime.suspect.isBlank()) {
+            getString(R.string.crime_report_no_suspect)
+        } else {
+            getString(R.string.crime_report_suspect, crime.suspect)
+        }
 
-            fun newInstance(crimeId: UUID): CrimeFragment {
-                val args = Bundle().apply {
-                    putSerializable(ARG_CRIME_ID, crimeId)
-                }
-                return CrimeFragment().apply {
-                    arguments = args
-                }
+        return getString(
+            R.string.crime_report,
+            crime.title, dateString, solvedString, suspect
+        )
+    }
+
+    companion object {
+        fun newInstance(crimeId: UUID): CrimeFragment {
+            val args = Bundle().apply {
+                putSerializable(ARG_CRIME_ID, crimeId)
+            }
+            return CrimeFragment().apply {
+                arguments = args
             }
         }
     }
+}
