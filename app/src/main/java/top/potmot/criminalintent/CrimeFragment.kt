@@ -21,12 +21,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import java.io.File
 import java.util.*
 
-private const val TAG = "CrimeFragment"
 private const val ARG_CRIME_ID = "crime_id"
 private const val DIALOG_DATE = "DialogDate"
 private const val REQUEST_DATE = 0
@@ -77,21 +75,19 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val crimeId = arguments?.getSerializable(ARG_CRIME_ID) as UUID
-        crimeDetailViewModel.crimeLiveData.observe(
-            viewLifecycleOwner,
-            Observer { crime ->
-                crime?.let {
-                    this.crime = crime
-                    photoFile = crimeDetailViewModel.getPhotoFile(crime)
-                    photoUri = FileProvider.getUriForFile(
-                        requireActivity(),
-                        "top.potmot.criminalintent.fileprovider",
-                        photoFile
-                    )
-                    updateUI()
-                }
-            })
+
+        crimeDetailViewModel.crimeLiveData.observe(viewLifecycleOwner) { crime ->
+            crime?.let {
+                this.crime = crime
+                photoFile = crimeDetailViewModel.getPhotoFile(crime)
+                photoUri = FileProvider.getUriForFile(
+                    requireActivity(),
+                    "top.potmot.criminalintent.fileprovider",
+                    photoFile
+                )
+                updateUI()
+            }
+        }
     }
 
     override fun onStart() {
