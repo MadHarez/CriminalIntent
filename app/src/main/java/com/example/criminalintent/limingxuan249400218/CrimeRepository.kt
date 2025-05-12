@@ -39,7 +39,15 @@ class CrimeRepository private constructor(context: Context) {
         }
     }
 
-    fun getPhotoFile(crime: Crime): File = File(filesDir, crime.photoFileName)
+    fun getPhotoFile(crime: Crime): File {
+        return File(filesDir, crime.photoFileName)
+    }
+    fun deleteCrime(crime: Crime) {
+        executor.execute {
+            crimeDao.deleteCrime(crime)
+        }
+    }
+
 
     companion object {
         private var INSTANCE: CrimeRepository? = null

@@ -27,4 +27,38 @@
     <string name="crime_report_subject">IntentoCriminal Informe del Crimen</string>
     <string name="send_report">Enviar el informe del crimen a través de</string>
     <string name="date_format_pattern">EEE, d \'de\' MMM \'de\' yyyy, HH:mm:ss zzz</string>
+    <string name="crime_audio">Configurar el audio</string>
+    <string name="crime_delete">Eliminar delito</string>
+
+    <!-- Audio Fragment -->
+    <string name="audio_record_start">Comenzar grabación</string>
+    <string name="audio_record_stop">Detener grabación</string>
+    <string name="audio_upload">Subir audio</string>
+    <string name="audio_play">Reproducir</string>
+    <string name="audio_stop">Detener</string>
+    <string name="audio_pause">Pausa</string>
+    <string name="audio_resume">Continuar</string>
+    <string name="audio_slow_play">Reproducción lenta</string>
+    <string name="audio_status_ready">Listo</string>
+    <string name="audio_status_recording">Grabando…</string>
+    <string name="audio_status_complete">Grabación completada</string>
+    <string name="audio_status_uploading">Subiendo</string>
+    <string name="audio_status_upload_success">¡Subida exitosa!</string>
+    <string name="audio_status_upload_failed">Subida fallida</string>
+    <string name="audio_recording_failed">Grabación fallida</string>
+    <string name="audio_playback_failed">Reproducción fallida</string>
+    <string name="audio_status_playing">Reproduciendo…</string>
+    <string name="audio_status_slow_playing">Reproducción lenta…</string>
+    <string name="audio_status_paused">En pausa</string>
+    <string name="audio_status_finished">Reproducción finalizada</string>
+    <string name="audio_permission_required">Se requiere permiso de micrófono</string>
+    <string name="audio_permission_denied">Permiso denegado, no se puede grabar</string>
+    <string name="audio_recording_canceled">Grabación cancelada</string>
+
+    <string name="storage_permission_required">Se requiere permiso de almacenamiento para seleccionar archivos</string>
+    <string name="audio_no_file_to_play">No hay archivo de audio para reproducir</string>
+
+    <string name="audio_file_saved">Archivo de audio guardado</string>
+    <string name="audio_file_failed">Fallo al leer el archivo de audio</string>
+    <string name="audio_file_save_failed">Fallo al guardar el archivo de audio</string>
 </resources>

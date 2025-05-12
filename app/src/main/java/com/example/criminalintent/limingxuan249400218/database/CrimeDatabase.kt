@@ -7,7 +7,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.criminalintent.limingxuan249400218.Crime
 
-@Database(entities = [Crime::class], version = 2)
+@Database(entities = [Crime::class], version = 3)
 @TypeConverters(CrimeTypeConverters::class)
 abstract class CrimeDatabase : RoomDatabase() {
 

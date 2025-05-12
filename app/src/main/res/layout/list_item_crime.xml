@@ -5,6 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- ImageView -->
+    <ImageView
+        android:id="@+id/crime_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/darker_gray"
+        android:cropToPadding="true"
+        android:scaleType="centerInside"
+        android:contentDescription="@string/crime_photo_no_image_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Crime Title TextView -->
     <TextView
         android:id="@+id/crime_title"
         android:layout_width="0dp"
@@ -16,9 +31,10 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/crime_solved"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/crime_photo"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Crime Date TextView -->
     <TextView
         android:id="@+id/crime_date"
         android:layout_width="0dp"
@@ -28,9 +44,10 @@
         android:layout_marginEnd="8dp"
         android:text="Crime Date"
         app:layout_constraintEnd_toStartOf="@+id/crime_solved"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/crime_photo"
         app:layout_constraintTop_toBottomOf="@+id/crime_title" />
 
+    <!-- Solved ImageView -->
     <ImageView
         android:id="@+id/crime_solved"
         android:layout_width="wrap_content"

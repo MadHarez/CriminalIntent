@@ -12,6 +12,7 @@ constraintlayout = "2.1.4"
 room = "2.5.0"
 recyleview = "1.0.0"
 lifecycle = "2.0.0"
+media3CommonKtx = "1.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,6 +27,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 lifecycle-extension = { group = "androidx.lifecycle", name = "lifecycle-extensions" ,version.ref = "lifecycle" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyleview" }
+androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 
 [plugins]

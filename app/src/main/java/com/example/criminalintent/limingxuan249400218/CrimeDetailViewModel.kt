@@ -26,4 +26,11 @@ class CrimeDetailViewModel : ViewModel() {
     fun getPhotoFile(crime: Crime): File {
         return crimeRepository.getPhotoFile(crime)
     }
+    fun getCrime(id: UUID): LiveData<Crime?>{
+        return crimeRepository.getCrime(id)
+    }
+
+    fun deleteCrime(crime: Crime) {
+        crimeRepository.deleteCrime(crime)
+    }
 }

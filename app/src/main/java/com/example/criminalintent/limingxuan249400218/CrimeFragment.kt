@@ -1,10 +1,12 @@
 package com.example.criminalintent.limingxuan249400218
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -29,11 +31,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "CrimeFragment"
-private const val ARG_CRIME_ID = "crime_id"
-private const val DIALOG_DATE = "DialogDate"
+
+
 private const val REQUEST_DATE = 0
 private const val REQUEST_CONTACT = 1
 private const val REQUEST_PHOTO = 2
+private const val REQUEST_AUDIO = 3
+private const val REQUEST_GALLERY =4
+
+
+private const val ARG_CRIME_ID = "crime_id"
+private const val DIALOG_DATE = "DialogDate"
+
 
 
 class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
@@ -42,11 +51,15 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var photoUri: Uri
     private lateinit var titleField: EditText
     private lateinit var dateButton: Button
-    private lateinit var solvedCheckBox: CheckBox
+    private lateinit var audioButton: Button
     private lateinit var reportButton: Button
     private lateinit var suspectButton: Button
+    private lateinit var solvedCheckBox: CheckBox
     private lateinit var photoButton: ImageButton
     private lateinit var photoView: ImageView
+    private lateinit var deleteButton: Button
+
+
 
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProviders.of(this).get(CrimeDetailViewModel::class.java)
@@ -68,11 +81,13 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
 
         titleField = view.findViewById(R.id.crime_title) as EditText
         dateButton = view.findViewById(R.id.crime_date) as Button
+        audioButton = view.findViewById(R.id.crime_audio) as Button
         solvedCheckBox = view.findViewById(R.id.crime_solved) as CheckBox
         reportButton = view.findViewById(R.id.crime_report) as Button
         suspectButton = view.findViewById(R.id.crime_suspect) as Button
-        photoButton = view.findViewById(R.id.crime_camera) as ImageButton
+        photoButton = view.findViewById(R.id.crime_photo_button) as ImageButton
         photoView = view.findViewById(R.id.crime_photo) as ImageView
+        deleteButton = view.findViewById(R.id.crime_delete) as Button
 
         return view
     }
@@ -93,8 +108,17 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
                     )
                     updateUI()
                 }
+                view.findViewById<Button>(R.id.crime_audio).setOnClickListener {
+                    // 启动 AudioFragment
+                    val audioFragment = AudioFragment()
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, audioFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
             })
-    }
+        }
+
 
     override fun onStart() {
         super.onStart()
@@ -205,6 +229,11 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
 
                 startActivityForResult(captureImage, REQUEST_PHOTO)
             }
+
+        }
+        deleteButton.setOnClickListener {
+            crimeDetailViewModel.deleteCrime(crime)
+            requireActivity().onBackPressed()
         }
     }
 
@@ -249,12 +278,10 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         if (photoFile.exists()) {
             val bitmap = getScaledBitmap(photoFile.path, requireActivity())
             photoView.setImageBitmap(bitmap)
-            photoView.contentDescription =
-                getString(R.string.crime_photo_image_description)
+            photoView.contentDescription = getString(R.string.crime_photo_image_description)
         } else {
             photoView.setImageDrawable(null)
-            photoView.contentDescription =
-                getString(R.string.crime_photo_no_image_description)
+            photoView.contentDescription = getString(R.string.crime_photo_no_image_description)
         }
     }
 
@@ -266,6 +293,19 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         )
         dateButton.text = dateFormat.format(crime.date)
     }
+
+//    private fun showPhotoPickerDialog() {
+//        val options = arrayOf("Take a photo", "pick from gallery")
+//        val builder = AlertDialog.Builder(requireContext())
+//        builder.setTitle("Pick Photo")
+//        builder.setItems(options) { _, which ->
+//            when (which) {
+//                0 -> takePhoto() // 拍照
+//                1 -> pickFromGallery() // 从相册选择
+//            }
+//        }
+//        builder.show()
+//    }
 
 
 

@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.lifecycle.extension)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.media3.common.ktx)
     ksp(libs.room.compiler)
 
     implementation(libs.androidx.core.ktx)

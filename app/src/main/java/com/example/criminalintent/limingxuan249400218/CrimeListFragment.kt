@@ -116,6 +116,7 @@ class CrimeListFragment : Fragment() {
         private val titleTextView: TextView = itemView.findViewById(R.id.crime_title)
         private val dateTextView: TextView = itemView.findViewById(R.id.crime_date)
         private val solvedImageView: ImageView = itemView.findViewById(R.id.crime_solved)
+        private val photoImageView: ImageView = itemView.findViewById(R.id.crime_photo)
 
         init {
             itemView.setOnClickListener(this)
@@ -129,6 +130,11 @@ class CrimeListFragment : Fragment() {
                 View.VISIBLE
             } else {
                 View.GONE
+            }
+            val photoFile = crimeListViewModel.getPhotoFile(crime)
+            if (photoFile.exists()){
+                val bitmap = getScaledBitmap(photoFile.path,requireActivity())
+                photoImageView.setImageBitmap(bitmap)
             }
         }
 

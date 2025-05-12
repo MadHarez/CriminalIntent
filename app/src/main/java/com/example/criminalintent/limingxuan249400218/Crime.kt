@@ -12,8 +12,29 @@ data class Crime(
     var title: String = "",
     var date: Date = Date(),
     var isSolved: Boolean = false,
-    var suspect: String = ""
-){
-val photoFileName
-    get() = "IMG_$id.jpg"
+    var suspect: String = "",
+    var audioPath: String = "",
+    var audioData: ByteArray? = null
+) {
+    val photoFileName
+        get() = "IMG_$id.jpg"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Crime
+
+        if (audioData != null) {
+            if (other.audioData == null) return false
+            if (!audioData.contentEquals(other.audioData)) return false
+        } else if (other.audioData != null) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return audioData?.contentHashCode() ?: 0
+    }
 }
+

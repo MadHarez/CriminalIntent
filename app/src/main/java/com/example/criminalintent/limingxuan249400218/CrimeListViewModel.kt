@@ -1,6 +1,7 @@
 package com.example.criminalintent.limingxuan249400218
 
 import androidx.lifecycle.ViewModel
+import java.io.File
 
 class CrimeListViewModel : ViewModel() {
 
@@ -9,5 +10,8 @@ class CrimeListViewModel : ViewModel() {
 
     fun addCrime(crime: Crime) {
         crimeRepository.addCrime(crime)
+    }
+    fun getPhotoFile(crime: Crime): File {
+        return crimeRepository.getPhotoFile(crime)
     }
 }

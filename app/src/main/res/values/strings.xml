@@ -21,5 +21,39 @@
     <string name="crime_report_suspect">the suspect is %s.</string>
     <string name="crime_report_subject">CriminalIntent Crime Report</string>
     <string name="send_report">Send crime report via</string>
-    <string name="date_format_pattern">EEEE, MMMM d, yyyy</string>
+    <string name="date_format_pattern">EEEE, MMMM d, HH:mm:ss zzz,yyyy</string>
+    <string name="crime_audio">Set Audio</string>
+    <string name="crime_delete">Delete Crime</string>
+
+    <!-- Audio Fragment -->
+    <string name="audio_record_start">Start Recording</string>
+    <string name="audio_record_stop">Stop Recording</string>
+    <string name="audio_upload">Upload Audio</string>
+    <string name="audio_play">Play</string>
+    <string name="audio_stop">Stop</string>
+    <string name="audio_pause">Pause</string>
+    <string name="audio_resume">Resume</string>
+    <string name="audio_slow_play">Slow Play</string>
+    <string name="audio_status_ready">Ready</string>
+    <string name="audio_status_recording">Recording…</string>
+    <string name="audio_status_complete">Recording complete</string>
+    <string name="audio_recording_failed">Recording failed</string>
+    <string name="audio_playback_failed">Playback failed</string>
+    <string name="audio_status_uploading">Uploading</string>
+    <string name="audio_status_upload_success">Upload Successfully!</string>
+    <string name="audio_status_upload_failed">Upload Failed</string>
+    <string name="audio_status_playing">Playing…</string>
+    <string name="audio_status_slow_playing">Slow playing…</string>
+    <string name="audio_status_paused">Paused</string>
+    <string name="audio_status_finished">Playback finished</string>
+    <string name="audio_permission_required">Microphone permission required</string>
+    <string name="audio_permission_denied">Permission denied, cannot record</string>
+    <string name="audio_recording_canceled">Recording canceled</string>
+
+    <string name="storage_permission_required">Storage permission required to select files</string>
+    <string name="audio_no_file_to_play">No audio file to play</string>
+
+    <string name="audio_file_saved">Audio file saved</string>
+    <string name="audio_file_failed">Failed to read audio file</string>
+    <string name="audio_file_save_failed">Failed to save audio file</string>
 </resources>
