@@ -15,6 +15,7 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
@@ -176,23 +177,21 @@ class AudioFragment : Fragment() {
         }
 
         uploadButton.setOnClickListener {
-            // 检查权限
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // 请求权限
+                // 使用统一的权限请求码
                 ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    REQUEST_AUDIO
+                    REQUEST_READ_EXTERNAL_STORAGE // 改为使用预定义的常量
                 )
             } else {
-                // 打开文件选择器
                 openFilePicker()
             }
-        }
+            }
     }
 
 
@@ -221,6 +220,7 @@ class AudioFragment : Fragment() {
         durationText.text = formatTime(duration)
     }
 
+    @SuppressLint("DefaultLocale")
     private fun formatTime(milliseconds: Int): String {
         return String.format(
             "%02d:%02d",
@@ -252,22 +252,6 @@ class AudioFragment : Fragment() {
             REQUEST_RECORD_AUDIO_PERMISSION
         )
     }
-
-    private fun checkReadStoragePermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestReadStoragePermission() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            REQUEST_READ_EXTERNAL_STORAGE
-        )
-    }
-
     private fun startRecording(): Boolean {
         return try {
             val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC)
@@ -371,12 +355,12 @@ class AudioFragment : Fragment() {
     }
 
     private fun openFilePicker() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "audio/*"
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
+            type = "audio/*"
         }
         startActivityForResult(
-            Intent.createChooser(intent, "Select Audio File"),
+            Intent.createChooser(intent, getString(R.string.select_audio_file)),
             REQUEST_CODE_PICK_AUDIO
         )
     }
@@ -449,62 +433,56 @@ class AudioFragment : Fragment() {
     }
 
     private fun saveAudioToCrime(uri: Uri) {
-        val crimeId = arguments?.getSerializable(ARG_CRIME_ID) as? UUID ?: run {
-            showToast("Invalid crime ID")
-            return
-        }
+        try {
+            val inputStream = requireActivity().contentResolver.openInputStream(uri)
+            val audioData = inputStream?.readBytes()
+            inputStream?.close()
 
-        crimeDetailViewModel.getCrime(crimeId).observe(viewLifecycleOwner) { crime ->
-            crime?.let {
-                it.audioPath = uri.toString()
-                crimeDetailViewModel.saveCrime(it)
-                currentAudioUri = uri
-                audioFile = null
-                updateButtonStates()
-                showToast("Audio file saved successfully")
-                resetProgressBar()
-            } ?: showToast("Crime not found")
+            if (audioData != null) {
+                val crimeId = arguments?.getSerializable(ARG_CRIME_ID) as? UUID ?: run {
+                    showToast(getString(R.string.invalid_crime_id))
+                    return
+                }
+
+                crimeDetailViewModel.getCrime(crimeId).observe(viewLifecycleOwner) { crime ->
+                    crime?.let {
+                        it.audioData = audioData
+                        crimeDetailViewModel.saveCrime(it)
+                        currentAudioUri = uri
+                        audioFile = null
+                        updateButtonStates()
+                        showToast(getString(R.string.audio_file_saved))
+                    } ?: showToast(getString(R.string.crime_not_found))
+                }
+            } else {
+                showToast(getString(R.string.audio_file_failed))
+            }
+        } catch (e: Exception) {
+            Log.e("AudioFragment", "Error reading audio file", e)
+            showToast(getString(R.string.audio_file_save_failed))
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_PICK_AUDIO && resultCode == Activity.RESULT_OK) {
-            data?.data?.let { uri ->
-                val mimeType = requireContext().contentResolver.getType(uri)
-                if (mimeType?.startsWith("audio/") == true) {
-                    saveAudioToCrime(uri)
-                } else {
-                    showToast("Please select an audio file")
+        when (requestCode) {
+            REQUEST_CODE_PICK_AUDIO -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.data?.let { uri ->
+                        val mimeType = requireContext().contentResolver.getType(uri)
+                        if (mimeType?.startsWith("audio/") == true) {
+                            saveAudioToCrime(uri)
+                        } else {
+                            showToast(getString(R.string.select_audio_only))
+                        }
+                    } ?: showToast(getString(R.string.no_file_selected))
                 }
-            } ?: showToast("No file selected")
+            }
         }
-//        requestCode == REQUEST_AUDIO && data != null -> {
-//            val uri = data.data
-//            if (uri != null) {
-//                // 读取文件内容并保存到 SQLite
-//                saveAudioToDatabase(uri)
-//            }
-//        }
     }
-//    private fun saveAudioToDatabase(uri: Uri) {
-//        try {
-//            val inputStream = requireActivity().contentResolver.openInputStream(uri)
-//            val audioData = inputStream?.readBytes()
-//            if (audioData != null) {
-//                // 保存到 Crime 对象
-//                crime.audioData = audioData
-//                // 更新数据库
-//                crimeDetailViewModel.saveCrime(crime)
-//                Toast.makeText(requireContext(), getString(R.string.audio_file_saved), Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(requireContext(), getString(R.string.audio_file_failed), Toast.LENGTH_SHORT).show()
-//            }
-//        } catch (e: Exception) {
-//            Log.e("CrimeFragment",  getString(R.string.audio_file_save_failed), e)
-//            Toast.makeText(requireContext(),  getString(R.string.audio_file_save_failed), Toast.LENGTH_SHORT).show()
-//        }
-//    }
+
+
+
 
     override fun onStop() {
         super.onStop()
