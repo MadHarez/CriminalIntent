@@ -37,4 +37,17 @@
 
     </application>
 
+    <queries>
+        <!-- 联系人应用查询 -->
+        <intent>
+            <action android:name="android.intent.action.PICK" />
+            <data android:mimeType="vnd.android.cursor.dir/contact" />
+        </intent>
+
+        <!-- 相机应用查询 -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
 </manifest>

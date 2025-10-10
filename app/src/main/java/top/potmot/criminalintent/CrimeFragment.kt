@@ -142,55 +142,54 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         }
 
         suspectButton.apply {
-            val pickContactIntent =
-                Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
-
-            setOnClickListener {
-                startActivityForResult(pickContactIntent, REQUEST_CONTACT)
-            }
+            val pickContactIntent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
 
             val packageManager: PackageManager = requireActivity().packageManager
             val resolvedActivity: ResolveInfo? =
                 packageManager.resolveActivity(
                     pickContactIntent,
-                    PackageManager.MATCH_DEFAULT_ONLY
+                    PackageManager.MATCH_ALL
                 )
             if (resolvedActivity == null) {
-                isEnabled = true
+                isEnabled = false
+            } else {
+                setOnClickListener {
+                    startActivityForResult(pickContactIntent, REQUEST_CONTACT)
+                }
             }
         }
 
         photoButton.apply {
-            val packageManager: PackageManager = requireActivity().packageManager
-
             val captureImage = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            val packageManager: PackageManager = requireActivity().packageManager
             val resolvedActivity: ResolveInfo? =
                 packageManager.resolveActivity(
                     captureImage,
-                    PackageManager.MATCH_DEFAULT_ONLY
+                    PackageManager.MATCH_ALL
                 )
             if (resolvedActivity == null) {
-                isEnabled = true
-            }
+                isEnabled = false
+            } else {
+                setOnClickListener {
+                    captureImage.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
 
-            setOnClickListener {
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                    val cameraActivities: List<ResolveInfo> =
+                        packageManager.queryIntentActivities(
+                            captureImage,
+                            PackageManager.MATCH_DEFAULT_ONLY
+                        )
 
-                val cameraActivities: List<ResolveInfo> =
-                    packageManager.queryIntentActivities(
-                        captureImage,
-                        PackageManager.MATCH_DEFAULT_ONLY
-                    )
+                    for (cameraActivity in cameraActivities) {
+                        requireActivity().grantUriPermission(
+                            cameraActivity.activityInfo.packageName,
+                            photoUri,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+                    }
 
-                for (cameraActivity in cameraActivities) {
-                    requireActivity().grantUriPermission(
-                        cameraActivity.activityInfo.packageName,
-                        photoUri,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    )
+                    startActivityForResult(captureImage, REQUEST_PHOTO)
                 }
-
-                startActivityForResult(captureImage, REQUEST_PHOTO)
             }
         }
     }
